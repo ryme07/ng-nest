@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { environment } from './../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private authService: AuthService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -26,9 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
-    this.http.post(`${environment.api}/login`, this.form.getRawValue(), {
-      withCredentials: true
-    })
+    this.authService.login(this.form.getRawValue())
       .subscribe(() => this.router.navigate(['/']))
   }
 
