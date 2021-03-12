@@ -9,9 +9,13 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
+  isAuth: boolean = false;
+
   constructor(protected http: HttpClient) { }
 
   login(data: any): Observable<any> {
+    this.isAuth = true;
+    console.log(this.isAuth)
     return this.http.post(`${environment.api}/login`, data, {
       withCredentials: true
     })
@@ -22,12 +26,12 @@ export class AuthService {
   }
 
   user(): Observable<User> {
-    return this.http.get<User>(`${environment.api}/user`, {
-      withCredentials: true
-    })
+    return this.http.get<User>(`${environment.api}/user`)
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(`${environment.api}/logout`, {}, { withCredentials: true })
+    this.isAuth = false;
+    console.log(this.isAuth)
+    return this.http.post<void>(`${environment.api}/logout`, {})
   }
 }
